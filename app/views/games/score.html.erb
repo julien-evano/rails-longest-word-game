@@ -1,0 +1,31 @@
+<h1>Result</h1>
+
+<% answer = params["answer"] %>
+<% letters = params["letters"].split("") %>
+<% first_test = true %>
+
+
+<% answer.split("").each do |letter| %>
+  <br>
+  <% if letters.join.include?(letter.upcase) %>
+    <% letters.delete_at(letters.index(letter.upcase)) %>
+  <% else %>
+    <% first_test = false %>
+  <% end %>
+<% end %>
+
+<% second_test = @validation["found"] %>
+
+<% if  !first_test %>
+  <%= "Sorry but #{answer.upcase} can't be build out of #{params["letters"].split("").join(", ")}" %>
+<% elsif !second_test %>
+  <%= "Sorry but #{answer.upcase} does not seem to be a valid English word.." %>
+<% else %>
+  <% session[:score] += @validation["length"].to_i %>
+  <%= "Congratulations! #{answer.upcase} is a valid English word!" %>
+<% end %>
+
+<br><br>
+<%= "Your score is: #{session[:score]}" %>
+<br><br>
+<%= link_to 'Try Again', new_path %>
